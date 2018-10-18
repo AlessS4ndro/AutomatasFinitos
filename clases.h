@@ -35,6 +35,7 @@ struct Estado{
 
 template <typename T = int>
 class AutomataFinito{
+protected:
   Estado<T> *eInicial;
   list<Estado<T> *> estadosFinales;
   bool buscar_estado(Estado<T> *,Estado<T>);
@@ -45,12 +46,52 @@ public:
     this -> eInicial = eInicial;
   }
   ~AutomataFinito(){};
-  bool anadir_estado(Estado<T>,Transicion<T>,T objeto);
-  bool eliminar_estado(Estado<T>,Transicion<T>);
+  virtual bool anadir_estado(Estado<T>,Transicion<T>,T objeto);
+  virtual bool eliminar_estado(Estado<T>,Transicion<T>);
   void visualizar(Estado<T> *);
 
 };
 
+template <typename T = int>
+class AutomataFinitoNoDeterminista : public AutomataFinito<T>
+{
+
+public:
+  AutomataFinitoNoDeterminista(){AutomataFinito<T>();}
+  AutomataFinitoNoDeterminista(Estado<T> *eInicial){AutomataFinito<T>(AutomataFinito<T>::eInicial);}
+  ~AutomataFinitoNoDeterminista(){~AutomataFinito<T>();}
+  bool anadir_estado(Estado<T>,Transicion<T>,T objeto);
+  bool eliminar_estado(Estado<T>,Transicion<T>);
+private:
+  AutomataFinitoDeterminista & convertirAdeterminista();  
+};
+
+template <typename T = int>
+class AutomataFinitoDeterminista : public AutomataFinito<T>
+{
+public:
+  AutomataFinitoDeterminista(){AutomataFinito<T>();}
+  AutomataFinitoDeterminista(Estado<T> *eInicial){AutomataFinito<T>(AutomataFinito<T>::eInicial);}
+  ~AutomataFinitoDeterminista(){~AutomataFinito<T>();}
+  bool anadir_estado(Estado<T>,Transicion<T>,T objeto);
+  bool eliminar_estado(Estado<T>,Transicion<T>);
+};
+
+template <typename T = int>
+class ExpresionRegular
+{
+public:
+private:
+  AutomataFinito <T> automata;
+  string cadena;
+  void leer_cadena();
+  void estrella(AutomataFinito<T>);
+  void uniion(AutomataFinito<T>, AutomataFinito<T>);
+  void concatenacion(AutomataFinito<T>,AutomataFinito<T>);
+  void complemento(AutomataFinito<T>);
+
+
+};
 template <typename T>
 ostream & operator << (ostream &o,Estado<T> objeto)
 {

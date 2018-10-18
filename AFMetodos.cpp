@@ -29,22 +29,3 @@ void AutomataFinito<T>::visualizar(Estado <T> *caminante)
     (visualizar(it));
   }
 }
-template <typename T >
-bool AutomataFinito<T>::anadir_estado(Estado<T> estadoOrigen,Transicion<T> nuevaTransicion,T objeto)
-{
-  Estado<T> *nuevo = new Estado<T>(objeto);
-  Estado<T> *aux = eInicial;
-
-  if(!buscar_estado(aux,*nuevo) ){
-    if(buscar_estado(&aux, *estadoOrigen)){
-      aux -> transiciones.push_back(nuevaTransicion);
-      return true;
-    }
-    else {
-      cout<<"no existe el estado "<<estadoOrigen<<endl;
-      return false;
-    }
-  }
-  cout<<"estado a ingresar ya existe"<<endl;
-  return false;
-}
